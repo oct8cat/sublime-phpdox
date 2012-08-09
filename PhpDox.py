@@ -80,7 +80,6 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         if (params != ''):
             # TODO parameters alignment
             for param in params.split(','):
-                param = param.replace(' ', '')
                 p_name, eq, initial = param.replace(' ', '').partition('=')
                 p_type = self.resolve_var_type(initial)
                 snippet += ' * @param ' + p_type + ' \\' + p_name + ' Description.\n'
@@ -116,4 +115,6 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
             type = 'array'
         elif (var.isdigit()):
             type = 'int'
+        elif (var.startswith(('\'', '"'))):
+            type = 'string'
         return type
