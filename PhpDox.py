@@ -18,7 +18,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         """,
         'function': r"""
             ^\s*                                        # indent
-            (?P<access>public|protected|private|)\s* # access
+            (?P<access>public|protected|private|)\s*    # access
             (?P<static>static|)\s*                      # static modifier
             function\s+                                 # "function"
             (?P<name>\w+)\s*                            # name
@@ -27,7 +27,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         """,
         'variable': r"""
             ^\s*                                        # indent
-            (?P<access>public|protected|private|var)\s*    # access
+            (?P<access>public|protected|private|var)\s* # access
             (?P<static>static|)\s*                      # static modifier
             (?P<name>\$\w+)\s*                          # name
             (\s*=\s*|)
@@ -56,11 +56,9 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         'function':"""
 /**
  * ${{1:{name}}}
- *
-{params}
+ {params}
  * @access {access}
-{static}
- *
+ {static}
  * @return ${{2:mixed}} ${{3:Value}}.
  */""",
 
@@ -132,16 +130,28 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
     def resolve_static(self, val):
         """Resolves static modifier value"""
         if (val == 'static'):
-            return ' * @static'
-        return ''
+            return '* @static\n *'
+        return '*'
 
     def resolve_params(self, val):
         """Resolves method's parameters description"""
-        ret = ''
+        if (val == ''):
+            return '*'
+        type_width = 0
+        name_width = 0
+        params = []
+        lines = []
         for param in val.replace(' ', '').split(','):
             name, assign, value = param.partition('=')
-            ret += ' * @param {0} \\{1} Description.\n'.format(self.resolve_var_type(value), name)
-        return ret + ' *'
+            v_type = self.resolve_var_type(value)
+            params.append([v_type, name])
+            if (len(v_type) > type_width):
+                type_width = len(v_type)
+            if (len(name) > name_width):
+                name_width = len(name)
+        for v_type, v_name in params:
+            lines.append(' * @param {0:{1}} \\{2:{3}}'.format(v_type, type_width, v_name, name_width))
+        return '*\n' + '\n'.join(lines) + '\n *'
 
     def resolve_var_type(self, val):
         """Resolves variable's type by given value"""
