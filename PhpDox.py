@@ -7,34 +7,7 @@ syntax_list = {
 
 class PhpdoxCommand(sublime_plugin.TextCommand):
 
-    patterns = {
-        'class': r"""
-            ^\s*                                        # indent
-            class\s+                                    # "class"
-            (?P<name_class>\w+)\s*                      # class name
-            (extends|)\s*                               # "extends"
-            (?P<name_parent>\w+|\s*)                    # parent class name
-            .*
-        """,
-        'function': r"""
-            ^\s*                                        # indent
-            (?P<access>public|protected|private|)\s*    # access
-            (?P<static>static|)\s*                      # static modifier
-            function\s+                                 # "function"
-            (?P<name>\w+)\s*                            # name
-            \((?P<params>.*)\)                          # parameters
-            .*
-        """,
-        'variable': r"""
-            ^\s*                                        # indent
-            (?P<access>public|protected|private|var)\s* # access
-            (?P<static>static|)\s*                      # static modifier
-            (?P<name>\$\w+)\s*                          # name
-            (\s*=\s*|)
-            (?P<value>.*|);                             # value
-            .*
-        """,
-    }
+    settings = {}
 
     templates = {
 
@@ -58,7 +31,8 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
  * ${{1:{name}}}
  {params}
  * @access {access}
- {static}
+ * {static}
+ *
  * @return ${{2:mixed}} ${{3:Value}}.
  */""",
 
@@ -70,13 +44,14 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
  * @var {type}
  *
  * @access {access}
-{static}
+ * {static}
  */"""
     }
 
     def run(self, edit, **args):
         """Entry point"""
         v = self.view
+        self.settings = v.settings()
         line = v.line(v.sel()[0])
         snippet = self.process_line(v.substr(line))
         if (snippet != None):
@@ -85,7 +60,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 
     def process_line(self, line):
         """Resolves current line type and calls respective parse method"""
-        for p_name, p_string in self.patterns.iteritems():
+        for p_name, p_string in self.settings.get('phpdox')['patterns'].items():
             pattern = re.compile(p_string, re.VERBOSE)
             match = pattern.search(line)
             if (match != None):
@@ -130,8 +105,8 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
     def resolve_static(self, val):
         """Resolves static modifier value"""
         if (val == 'static'):
-            return '* @static\n *'
-        return '*'
+            return '@static'
+        return ''
 
     def resolve_params(self, val):
         """Resolves method's parameters description"""
