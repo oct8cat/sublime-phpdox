@@ -2,3 +2,5 @@
 *.bak
 *.swp
 *.pyc
+*.sublime-project
+*.sublime-workspace
