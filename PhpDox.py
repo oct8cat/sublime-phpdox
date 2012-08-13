@@ -29,10 +29,9 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         'function':"""
 /**
  * ${{1:{name}}}
- {params}
+ * {params}
  * @access {access}
  * {static}
- *
  * @return ${{2:mixed}} ${{3:Value}}.
  */""",
 
@@ -105,13 +104,13 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
     def resolve_static(self, val):
         """Resolves static modifier value"""
         if (val == 'static'):
-            return '@static'
+            return '@static\n *'
         return ''
 
     def resolve_params(self, val):
         """Resolves method's parameters description"""
         if (val == ''):
-            return '*'
+            return val
         type_width = 0
         name_width = 0
         params = []
@@ -125,8 +124,8 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
             if (len(name) > name_width):
                 name_width = len(name)
         for v_type, v_name in params:
-            lines.append(' * @param {0:{1}} \\{2:{3}}'.format(v_type, type_width, v_name, name_width))
-        return '*\n' + '\n'.join(lines) + '\n *'
+            lines.append(' * @param {0:{1}} \\{2:{3}} Description.'.format(v_type, type_width, v_name, name_width))
+        return '\n' + '\n'.join(lines) + '\n *'
 
     def resolve_var_type(self, val):
         """Resolves variable's type by given value"""
