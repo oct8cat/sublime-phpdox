@@ -1,9 +1,10 @@
 {
     "phpdox": {
         "patterns": {
-            "class"   : "^\\s*(?P<abstract>abstract|)\\s*class\\s+(?P<name_class>\\w+)\\s*(extends|)\\s*(?P<name_parent>\\w+|\\s*).*",
-            "function": "^\\s*(?P<access>public|protected|private|)\\s*(?P<static>static|)\\s*function\\s+(?P<name>\\w+)\\s*\\((?P<params>.*)\\).*",
-            "variable": "^\\s*(?P<access>public|protected|private|var)\\s*(?P<static>static|)\\s*(?P<name>\\$\\w+)\\s*(\\s*=\\s*|)(?P<value>.*|);.*"
+            "class"    : "^\\s*(?P<abstract>abstract|)\\s*class\\s+(?P<name_class>\\w+)\\s*(extends|)\\s*(?P<name_parent>\\w+|\\s*).*",
+            "interface": "^\\s*interface\\s+(?P<name_interface>\\w+)\\s*(extends|)\\s*(?P<name_parent>\\w+|\\s*).*",
+            "function" : "^\\s*(?P<access>public|protected|private|)\\s*(?P<static>static|)\\s*function\\s+(?P<name>\\w+)\\s*\\((?P<params>.*)\\).*",
+            "variable" : "^\\s*(?P<access>public|protected|private|var)\\s*(?P<static>static|)\\s*(?P<name>\\$\\w+)\\s*(\\s*=\\s*|)(?P<value>.*|);.*"
         }
     }
 }

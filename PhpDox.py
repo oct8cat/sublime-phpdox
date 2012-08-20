@@ -25,6 +25,20 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 * @link     ${{4:http://www.example.com}}
 **/""",
 
+# Interface template
+        'interface':"""
+/**
+* ${{1:{0}}}
+*
+* @uses     {1}
+*
+* @category ${{2:Category}}
+* @package  ${{3:Package}}
+* @author   ${{TM_FULLNAME}} <${{TM_EMAIL}}>
+* @license  GNU GPL v3.0 {{@link http://www.gnu.org/copyleft/gpl.html}}
+* @link     ${{4:http://www.example.com}}
+**/""",
+
 # Function template
         'function':"""
     /**
@@ -74,6 +88,10 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
     def dox_class(self, match):
         """Resolves class's PHPDoc by given match"""
         return self.templates['class'].format(*match.group('name_class', 'name_parent'))
+
+    def dox_interface(self, match):
+        """Resolves interface's PHPDoc by given match"""
+        return self.templates['interface'].format(*match.group('name_interface', 'name_parent'))
 
     def dox_function(self, match):
         """Resolves function's PHPDoc by given match"""
