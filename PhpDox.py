@@ -27,24 +27,23 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 
 # Function template
         'function':"""
-/**
- * ${{1:{name}}}
- * {params}
- * @access {access}
- * {static}
- * @return ${{2:mixed}} ${{3:Value}}.
- */""",
+    /**
+     * ${{1:{name}}}
+     * {params}
+     * @access {access}{static}
+     *
+     * @return ${{2:mixed}} ${{3:Value}}.
+     */""",
 
 # Variable template
         'variable':"""
-/**
- * ${{1:\\{name}}}
- *
- * @var {type}
- *
- * @access {access}
- * {static}
- */"""
+    /**
+     * ${{1:\\{name}}}
+     *
+     * @var {type}
+     *
+     * @access {access}{static}
+     */"""
     }
 
     def run(self, edit, **args):
@@ -55,6 +54,10 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         snippet = self.process_line(v.substr(line))
         if (snippet != None):
             v.run_command('move', {'by': 'lines', 'forward': False})
+            v.run_command('move_to', {'to': 'hardeol'})
+            v.run_command('insert_snippet', {'contents': "\n"})
+            v.run_command('move_to', {'to': 'hardbol', 'extend': True})
+            v.run_command('left_delete')
             v.run_command('insert_snippet', {'contents': snippet})
 
     def process_line(self, line):
@@ -68,7 +71,6 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         return None
 
 
-
     def dox_class(self, match):
         """Resolves class's PHPDoc by given match"""
         return self.templates['class'].format(*match.group('name_class', 'name_parent'))
@@ -77,9 +79,9 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         """Resolves function's PHPDoc by given match"""
         tokens = {
             'access': self.resolve_access(match.group('access')),
-            'static': self.resolve_static(match.group('static')),
             'name': match.group('name'),
             'params': self.resolve_params(match.group('params')),
+            'static': self.resolve_static(match.group('static')),
         }
         return self.templates['function'].format(**tokens)
 
@@ -87,12 +89,11 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
         """Resolves variable's PHPDoc by given match"""
         tokens = {
             'access': self.resolve_access(match.group('access')),
-            'static': self.resolve_static(match.group('static')),
             'name': match.group('name'),
+            'static': self.resolve_static(match.group('static')),
             'type': self.resolve_var_type(match.group('value')),
         }
         return self.templates['variable'].format(**tokens)
-
 
 
     def resolve_access(self, val):
@@ -104,7 +105,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
     def resolve_static(self, val):
         """Resolves static modifier value"""
         if (val == 'static'):
-            return '@static\n *'
+            return '\n     * @static'
         return ''
 
     def resolve_params(self, val):
@@ -124,8 +125,8 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
             if (len(name) > name_width):
                 name_width = len(name)
         for v_type, v_name in params:
-            lines.append(' * @param {0:{1}} \\{2:{3}} Description.'.format(v_type, type_width, v_name, name_width))
-        return '\n' + '\n'.join(lines) + '\n *'
+            lines.append('     * @param {0:{1}} \\{2:{3}} Description.'.format(v_type, type_width, v_name, name_width))
+        return '\n' + '\n'.join(lines) + '\n     *'
 
     def resolve_var_type(self, val):
         """Resolves variable's type by given value"""
