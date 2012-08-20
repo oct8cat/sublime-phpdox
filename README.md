@@ -19,7 +19,7 @@ Current version supports:
     + ***@var*** - Property type. *array*, *string* and *int* types currently supported.
     + ***@param*** - Method's arguments. Arguments' names and types will be resolved and aligned correctly.
     + ***@static*** - *static* modifier resolving.
-    + ***@access*** - Access modifer resolving (*public*, *protected*, *private supported*) - defaults to *public*.
+    + ***@access*** - Access modifer resolving (*public*, *protected*, *private* supported) - defaults to *public*.
     + ***@return*** - Returned value's type and description (Currently hardcoded to *mixed* type).
 
 
