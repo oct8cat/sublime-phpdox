@@ -23,7 +23,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 * @author   ${{TM_FULLNAME}} <${{TM_EMAIL}}>
 * @license  GNU GPL v3.0 {{@link http://www.gnu.org/copyleft/gpl.html}}
 * @link     ${{4:http://www.example.com}}
-**/""",
+*/""",
 
 # Interface template
         'interface':"""
@@ -37,7 +37,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 * @author   ${{TM_FULLNAME}} <${{TM_EMAIL}}>
 * @license  GNU GPL v3.0 {{@link http://www.gnu.org/copyleft/gpl.html}}
 * @link     ${{4:http://www.example.com}}
-**/""",
+*/""",
 
 # Function template
         'function':"""
