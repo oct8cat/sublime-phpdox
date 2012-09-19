@@ -21,8 +21,8 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 * @category ${{2:Category}}
 * @package  ${{3:Package}}
 * @author   ${{TM_FULLNAME}} <${{TM_EMAIL}}>
-* @license  GNU GPL v3.0 {{@link http://www.gnu.org/copyleft/gpl.html}}
-* @link     ${{4:http://www.example.com}}
+* @license  ${{TM_LICENSE}}
+* @link     ${{4:Link}}
 */""",
 
 # Interface template
@@ -35,8 +35,8 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 * @category ${{2:Category}}
 * @package  ${{3:Package}}
 * @author   ${{TM_FULLNAME}} <${{TM_EMAIL}}>
-* @license  GNU GPL v3.0 {{@link http://www.gnu.org/copyleft/gpl.html}}
-* @link     ${{4:http://www.example.com}}
+* @license  ${{TM_LICENSE}}
+* @link     ${{4:Link}}
 */""",
 
 # Function template
