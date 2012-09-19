@@ -22,7 +22,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 * @package  ${{3:Package}}
 * @author   ${{TM_FULLNAME}} <${{TM_EMAIL}}>
 * @license  ${{TM_LICENSE}}
-* @link     ${{4:Link}}
+* @link     ${{TM_LINK}}
 */""",
 
 # Interface template
@@ -36,7 +36,7 @@ class PhpdoxCommand(sublime_plugin.TextCommand):
 * @package  ${{3:Package}}
 * @author   ${{TM_FULLNAME}} <${{TM_EMAIL}}>
 * @license  ${{TM_LICENSE}}
-* @link     ${{4:Link}}
+* @link     ${{TM_LINK}}
 */""",
 
 # Function template
